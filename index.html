@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery Billing Report Generator</title>
+    <!-- Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Use a bakery-friendly font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* Light gray background */
+        }
+        /* Simple style for the active tab */
+        .tab-active {
+            border-bottom: 2px solid #3b82f6; /* Blue-600 */
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-5xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-2xl">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Bakery Billing Report Demonstrator</h1>
+
+        <!-- Tab Navigation -->
+        <div class="flex justify-center border-b border-gray-200 mb-8">
+            <button id="tab-b2c" class="tab-btn py-3 px-6 font-semibold text-gray-500 hover:text-gray-700 tab-active" data-target="#b2c-view">
+                Scenario 1: Customer Invoice (B2C)
+            </button>
+            <button id="tab-b2b" class="tab-btn py-3 px-6 font-semibold text-gray-500 hover:text-gray-700" data-target="#b2b-view">
+                Scenario 2: Client Statement (B2B)
+            </button>
+        </div>
+
+        <!-- Content Views -->
+        <div>
+            <!-- ======================================== -->
+            <!-- SCENARIO 1: B2C CUSTOMER INVOICE VIEW    -->
+            <!-- ======================================== -->
+            <div id="b2c-view" class="tab-content">
+                <!-- Detailed explanation of the steps -->
+                <div class="text-left text-gray-700 mb-8 px-4 md:px-10">
+                    <h2 class="text-xl font-semibold mb-3">Scenario 1: For a Regular User (B2C) - "Billing Report" as an Invoice or Order History</h2>
+                    <p class="mb-4">This is the most common scenario. The "client" is a standard customer, and their "billing report" is their invoice for a specific purchase or a history of all their purchases. This is typically automated by your website's e-commerce or Point of Sale (POS) system.</p>
+                    
+                    <h4 class="text-lg font-semibold mb-2">Automated Steps (Handled by the Website):</h4>
+                    <ol class="list-decimal list-inside space-y-3">
+                        <li><strong>User Places Order:</strong> The user selects items, goes to checkout, and provides shipping/pickup details and payment information.</li>
+                        <li><strong>System Generates Invoice:</strong> The moment the order is confirmed, the system automatically generates a unique invoice. This document includes all the details.</li>
+                        <li><strong>Report Delivery:</strong> The user immediately receives an email and can see the order in their account.</li>
+                    </ol>
+                </div>
+                
+                <!-- B2C Simulation Component -->
+                <div class="border border-gray-200 rounded-lg p-6 md:p-10 shadow-lg bg-white">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Checkout Simulation</h3>
+                    
+                    <!-- Step 1: User Places Order -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-3">Step 1: User Places Order (Your Cart)</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <div class="flex justify-between items-center border-b pb-2 mb-2">
+                                <span class="font-medium text-gray-700">Sourdough Loaf (x2)</span>
+                                <span class="text-gray-600">$16.00</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b pb-2 mb-2">
+                                <span class="font-medium text-gray-700">Almond Croissant (x4)</span>
+                                <span class="text-gray-600">$18.00</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium text-gray-700">Baguette (x1)</span>
+                                <span class="text-gray-600">$3.00</span>
+                            </div>
+                            <div class="flex justify-between items-center mt-3 pt-3 border-t">
+                                <span class="font-semibold text-gray-800">Subtotal</span>
+                                <span class="font-semibold text-gray-800">$37.00</span>
+                            </div>
+                        </div>
+                        <div class="text-center mt-6">
+                            <button id="place-order-btn" class="bg-green-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-green-700 transition duration-300">
+                                Place Your Order
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 & 3: System Generates Invoice & Delivers Report -->
+                    <!-- This section is hidden by default and shown by JS -->
+                    <div id="b2c-report-output" class="hidden">
+                        <hr class="my-8 border-t-2 border-dashed">
+                        
+                        <div class="text-center">
+                            <h4 class="text-lg font-semibold text-gray-700 mb-3">Step 2: System Generates Invoice</h4>
+                            <p class="text-gray-600 mb-4">The JavaScript code ran and dynamically generated this invoice.</p>
+                        </div>
+                        
+                        <!-- Invoice will be injected here -->
+                        <div id="invoice-content" class="border border-gray-200 rounded-lg p-6 md:p-10 shadow-inner bg-gray-50">
+                            <!-- JS will populate this -->
+                        </div>
+
+                        <div class="text-center mt-8">
+                             <h4 class="text-lg font-semibold text-gray-700 mb-3">Step 3: Report Delivery</h4>
+                             <div id="b2c-success-msg" class="p-4 bg-green-100 text-green-800 border border-green-300 rounded-lg">
+                                Order Confirmed! A confirmation email and invoice (PDF) have been sent to Jane Doe.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================== -->
+            <!-- SCENARIO 2: B2B CLIENT STATEMENT VIEW    -->
+            <!-- ======================================== -->
+            <div id="b2b-view" class="tab-content hidden">
+                <p class="text-center text-gray-600 mb-4">This demonstrates the steps for generating a report for a corporate client.</p>
+                <p class="text-center text-gray-600 mb-6">Click the button to simulate the steps: 1) Define Period, 2) Gather Invoices, 3) Gather Payments, and 4) Generate Statement.</p>
+
+                <!-- Generator Button -->
+                <div class="text-center mb-8">
+                    <button id="generate-report-btn" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+                        Generate Client Statement
+                    </button>
+                </div>
+
+                <!-- B2B Report Output Area -->
+                <div id="b2b-report-content" class="hidden border border-gray-200 rounded-lg p-6 md:p-10 shadow-lg bg-white">
+                    <!-- Content will be dynamically injected here by JavaScript -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Tab Switching Logic ---
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-target');
+                    const targetView = document.querySelector(targetId);
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    button.classList.add('tab-active');
+                    if (targetView) {
+                        targetView.classList.remove('hidden');
+                    }
+                });
+            });
+
+            // --- B2C SIMULATION LOGIC ---
+            const placeOrderBtn = document.getElementById('place-order-btn');
+            const b2cReportOutput = document.getElementById('b2c-report-output');
+            const invoiceContentEl = document.getElementById('invoice-content');
+
+            placeOrderBtn.addEventListener('click', () => {
+                // This function IS the "code for the automated steps"
+                simulateB2CSteps();
+            });
+
+            function simulateB2CSteps() {
+                // Show loading state
+                placeOrderBtn.textContent = 'Processing Order...';
+                placeOrderBtn.disabled = true;
+
+                // Simulate network/processing delay
+                setTimeout(() => {
+                    
+                    // === STEP 2: SYSTEM GENERATES INVOICE ===
+                    // On a real server, this data would come from a database.
+                    
+                    // 2.1: Get Bakery Details
+                    const bakeryDetails = {
+                        name: "The Golden Loaf Bakery",
+                        address: "123 Bread St, Pastryville, 90210",
+                        email: "support@goldenloaf.com"
+                    };
+
+                    // 2.2: Get User's Details
+                    const userDetails = {
+                        name: "Jane Doe",
+                        address: "456 Cake Ave, Apt 2B",
+                        cityState: "New York, NY 10001"
+                    };
+
+                    // 2.3: Get Report Details
+                    const reportDetails = {
+                        invoiceNum: "ORD-10452",
+                        date: "Oct 30, 2025"
+                    };
+
+                    // 2.4: Get Order Breakdown
+                    const items = [
+                        { name: "Sourdough Loaf", qty: 2, price: 8.00 },
+                        { name: "Almond Croissant", qty: 4, price: 4.50 },
+                        { name: "Baguette", qty: 1, price: 3.00 }
+                    ];
+
+                    // 2.5: Calculate Financials
+                    const subtotal = items.reduce((acc, item) => acc + (item.qty * item.price), 0);
+                    const taxRate = 0.08875; // 8.875%
+                    const salesTax = subtotal * taxRate;
+                    const total = subtotal + salesTax;
+
+                    // 2.6: Set Payment Status
+                    const paymentStatus = "PAID";
+
+                    // 2.7: Build the Invoice HTML
+                    // This is the "code" that generates the report document.
+                    let itemRows = '';
+                    items.forEach(item => {
+                        itemRows += `
+                            <tr class="border-b">
+                                <td class="p-3 font-medium text-gray-700">${item.name}</td>
+                                <td class="p-3 text-gray-600 text-center">${item.qty}</td>
+                                <td class="p-3 text-gray-600 text-right">$${item.price.toFixed(2)}</td>
+                                <td class="p-3 text-gray-600 text-right">$${(item.qty * item.price).toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+
+                    const invoiceHTML = `
+                        <!-- Invoice Header -->
+                        <div class="flex justify-between items-start mb-8">
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-900">${bakeryDetails.name}</h2>
+                                <p class="text-gray-500">${bakeryDetails.address}</p>
+                                <p class="text-gray-500">${bakeryDetails.email}</p>
+                            </div>
+                            <div class="text-right">
+                                <h3 class="text-2xl font-bold text-gray-700">INVOICE</h3>
+                                <p class="text-gray-500 mt-1">Invoice #: <span class="text-gray-700">${reportDetails.invoiceNum}</span></s-p>
+                                <p class="text-gray-500">Date: <span class="text-gray-700">${reportDetails.date}</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Customer Details -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">Bill To:</h4>
+                            <p class="text-gray-600">${userDetails.name}</p>
+                            <p class="text-gray-600">${userDetails.address}</p>
+                            <p class="text-gray-600">${userDetails.cityState}</p>
+                        </div>
+
+                        <!-- Itemized List -->
+                        <table class="w-full text-left mb-8">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th class="p-3 text-sm font-semibold text-gray-600 rounded-l-lg">Item</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-600 text-center">Quantity</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-600 text-right">Unit Price</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-600 text-right rounded-r-lg">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${itemRows}
+                            </tbody>
+                        </table>
+
+                        <!-- Totals Section -->
+                        <div class="flex justify-end">
+                            <div class="w-full max-w-sm">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-500">Subtotal</span>
+                                    <span class="text-gray-700 font-medium">$${subtotal.toFixed(2)}</span>
+                                </div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-500">Sales Tax (${(taxRate * 100).toFixed(3)}%)</span>
+                                    <span class="text-gray-700 font-medium">$${salesTax.toFixed(2)}</span>
+                                </div>
+                                <div class="flex justify-between pt-2 border-t mt-2">
+                                    <span class="text-lg font-bold text-gray-900">Total</span>
+                                    <span class="text-lg font-bold text-gray-900">$${total.toFixed(2)}</span>
+                                </div>
+                                <div class="mt-4 p-3 bg-green-100 text-green-700 font-semibold text-center rounded-lg">
+                                    STATUS: ${paymentStatus}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // === STEP 3: REPORT DELIVERY ===
+                    // 3.1: Deliver to User Account (display on page)
+                    invoiceContentEl.innerHTML = invoiceHTML;
+                    b2cReportOutput.classList.remove('hidden');
+                    
+                    // 3.2: Deliver to Email (simulate success message)
+                    placeOrderBtn.textContent = 'Order Placed!';
+                    // The success message is already part of the HTML, we just un-hid it.
+
+                }, 1000); // 1-second delay
+            }
+
+
+            // --- B2B Report Generation Logic ---
+            const generateBtn = document.getElementById('generate-report-btn');
+            const reportContentEl = document.getElementById('b2b-report-content');
+
+            generateBtn.addEventListener('click', () => {
+                // ... (B2B code remains unchanged) ...
+                generateBtn.textContent = 'Gathering Data...';
+                generateBtn.disabled = true;
+                reportContentEl.classList.add('hidden');
+                reportContentEl.innerHTML = ''; 
+
+                setTimeout(() => {
+                    const billingPeriod = "Oct 1, 2025 - Oct 31, 2025";
+                    const statementDate = "Oct 31, 2025";
+                    const client = {
+                        name: "Main Street Coffee Shop",
+                        contact: "Mr. Allen",
+                        address: "789 Cafe Blvd, Pastryville, 90210"
+                    };
+                    const previousBalance = 50.00;
+                    
+                    const transactions = [
+                        { date: "10/05/2025", type: "Invoice", ref: "1022", charges: 150.00, payments: 0 },
+                        { date: "10/10/2025", type: "Payment", ref: "Check #451", charges: 0, payments: 100.00 },
+                        { date: "10/12/2025", type: "Invoice", ref: "1035", charges: 150.00, payments: 0 },
+                        { date: "10/19/2025", type: "Invoice", ref: "1048", charges: 150.00, payments: 0 }
+                    ];
+
+                    let totalNewCharges = 0;
+                    let totalPayments = 0;
+                    let currentBalance = previousBalance;
+
+                    let transactionRows = `
+                        <tr class="border-b bg-gray-50">
+                            <td class="p-3 font-semibold" colspan="4">Previous Balance</td>
+                            <td class="p-3 font-semibold text-right">$${previousBalance.toFixed(2)}</td>
+                        </tr>
+                    `;
+
+                    transactions.forEach(tx => {
+                        totalNewCharges += tx.charges;
+                        totalPayments += tx.payments;
+                        currentBalance = currentBalance + tx.charges - tx.payments;
+                        
+                        transactionRows += `
+                            <tr class="border-b">
+                                <td class="p-3 text-gray-600">${tx.date}</td>
+                                <td class="p-3 text-gray-700 font-medium">${tx.type}</td>
+                                <td class="p-3 text-gray-600">${tx.ref}</td>
+                                <td class="p-3 text-gray-600 text-right">${tx.charges > 0 ? '$' + tx.charges.toFixed(2) : '-'}</td>
+                                <td class="p-3 text-gray-600 text-right">${tx.payments > 0 ? '($' + tx.payments.toFixed(2) + ')' : '-'}</td>
+                                <td class="p-3 text-gray-700 text-right">$${currentBalance.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+
+                    const finalBalance = previousBalance + totalNewCharges - totalPayments;
+
+                    const reportHTML = `
+                        <!-- Report Header -->
+                        <div class="flex justify-between items-start mb-8">
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900">The Golden Loaf Bakery</h2>
+                                <p class="text-gray-500">123 Bread St, Pastryville, 90210</p>
+                            </div>
+                            <div class="text-right">
+                                <h3 class="text-3xl font-bold text-gray-700">Statement of Account</h3>
+                                <p class="text-gray-500 mt-1">Statement Date: <span class="text-gray-700">${statementDate}</span></p>
+                                <p class="text-gray-500">Billing Period: <span class="text-gray-700">${billingPeriod}</span></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Client Details -->
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-2">Client:</h4>
+                            <p class="text-gray-600 font-medium">${client.name}</p>
+                            <p class="text-gray-600">${client.address}</p>
+                        </div>
+                        
+                        <!-- Account Summary -->
+                        <div class="mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <h4 class="text-xl font-semibold text-blue-800 mb-3">Account Summary</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div>
+                                    <p class="text-sm text-blue-600">Previous Balance</p>
+                                    <p class="text-lg font-medium text-blue-900">$${previousBalance.toFixed(2)}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-blue-600">New Charges</p>
+                                    <p class="text-lg font-medium text-blue-900">$${totalNewCharges.toFixed(2)}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-blue-600">Payments Received</p>
+                                    <p class="text-lg font-medium text-blue-900">($${totalPayments.toFixed(2)})</p>
+                                </div>
+                                <div class="bg-blue-100 p-3 rounded-md">
+                                    <p class="text-sm font-semibold text-blue-700">Total Amount Due</p>
+                                    <p class="text-2xl font-bold text-blue-900">$${finalBalance.toFixed(2)}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Transactions -->
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4">Detailed Transactions</h4>
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-3 text-sm font-semibold text-gray-600 rounded-l-lg">Date</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-600">Type</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-600">Reference #</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-600 text-right">Charges</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-600 text-right">Payments</th>
+                                    <th class="p-3 text-sm font-semibold text-gray-600 text-right rounded-r-lg">Balance</th>
+                                T</tr>
+                            </thead>
+                            <tbody>
+                                ${transactionRows}
+                            </tbody>
+                        </table>
+                        
+                        <!-- Footer -->
+                        <div class="mt-8 pt-4 border-t text-center">
+                            <p class="text-gray-600 font-semibold">Total Amount Due: $${finalBalance.toFixed(2)}</e>
+                            <p class="text-gray-500 text-sm">Please remit payment by November 15, 2025.</p>
+                        </div>
+                    `;
+
+                    reportContentEl.innerHTML = reportHTML;
+                    reportContentEl.classList.remove('hidden');
+                    generateBtn.textContent = 'Re-generate Statement';
+                    generateBtn.disabled = false;
+
+                }, 1000); 
+            });
+
+        });
+    </script>
+
+</body>
+</html>
+
